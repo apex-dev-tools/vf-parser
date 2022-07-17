@@ -1,0 +1,41 @@
+{
+  "name": "@apexdevtools/vf-parser",
+  "version": "1.0.0",
+  "author": "Apex Dev Tools Team <apexdevtools@gmail.com> (https://github.com/apex-dev-tools)",
+  "bugs": "https://github.com/apex-dev-tools/vf-parser/issues",
+  "description": "Salesforce Visualforce parser",
+  "main": "lib/index.js",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "build": "npm run antlr4ts && cp ../README.md . && tsc",
+    "test": "jest --config jestconfig.json lib",
+    "antlr4ts": "npm run antlr-build && npm run antlr-patch",
+    "antlr-build": "(cd antlr; antlr4ts -visitor -o ../src VFLexer.g4 VFParser.g4)",
+    "antlr-patch": "node patch",
+    "check": "node -e require(\"./lib/index.js\").check()'"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "antlr4ts": "0.5.0-alpha.4",
+    "node-dir": "^0.1.17"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "@types/node": "^14.14.16",
+    "@types/node-dir": "^0.0.34",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "antlr4ts-cli": "0.5.0-alpha.4",
+    "eslint": "^7.32.0",
+    "jest": "^27.0.6",
+    "shx": "^0.3.4",
+    "typescript": "^4.3.5"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "homepage": "https://github.com/apex-dev-tools/vf-parser",
+  "repository": "apex-dev-tools/vf-parser"
+}

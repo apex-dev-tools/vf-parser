@@ -1,0 +1,5 @@
+var shell = require('shelljs');
+
+shell.sed('-i', 'public void clearCache\\(\\) {.*}', '', 'src/VFLexer.ts');
+shell.sed('-i', 'public void clearCache\\(\\) {.*}', '', 'src/VFParser.ts');
+console.log('Patched VFParser.ts & VFLexer.ts to remove clearCache()');
