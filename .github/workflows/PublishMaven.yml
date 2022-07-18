@@ -23,11 +23,10 @@ jobs:
 
       - name: Publish package
         run: |
-          cat $HOME/.m2/settings.xml
-          echo $GPG_PASSPHRASE
+          cat $HOME/.
           npm run init-jvm
           cd jvm
-          mvn --batch-mode deploy
+          mvn --batch-mode -Dgpg.passphrase='$GPG_PASSPHRASE' deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_TOKEN: ${{ secrets.OSSRH_TOKEN }}
