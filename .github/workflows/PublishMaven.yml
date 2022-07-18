@@ -23,7 +23,6 @@ jobs:
 
       - name: Publish package
         run: |
-          cat $HOME/.
           npm run init-jvm
           cd jvm
           mvn --batch-mode -Dgpg.passphrase='$GPG_PASSPHRASE' deploy
