@@ -24,7 +24,7 @@ jobs:
       - name: Publish package
         run: |
           cat $HOME/.m2/settings.xml
-          echo ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+          echo $GPG_PASSPHRASE
           npm run init-jvm
           cd jvm
           mvn --batch-mode deploy
