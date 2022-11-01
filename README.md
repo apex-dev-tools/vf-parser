@@ -1,13 +1,13 @@
-vf-parser
-===========
+# vf-parser
 
-Parser for Salesforce Visualforce. This is based on an [ANTLR4](https://www.antlr.org/) grammar, see antlr/ApexParser.g4. 
+Parser for Salesforce Visualforce. This is based on an [ANTLR4](https://www.antlr.org/) grammar, see antlr/ApexParser.g4.
 
 There are two builds of the parser available, a NPM module for use with Node and a Maven package for use on JVMs.
 
-These builds just contain the Parser & Lexer and provides no further support for analysing the generated parse trees beyond what is provided by ANTLR4. 
+These builds just contain the Parser & Lexer and provides no further support for analysing the generated parse trees beyond what is provided by ANTLR4.
 
-### Example
+## Example
+
 To parse a page file (NPM version):
 
     let lexer = new VFLexer(CharStreams.fromString("<apex:page/>"));
@@ -18,7 +18,7 @@ To parse a page file (NPM version):
 
 The 'context' is a VfUnitContext object which is the root of the parsed representation of the page. You can access the parse tree via functions on it.
 
-### Packages
+## Packages
 
 Maven
 
@@ -32,14 +32,16 @@ NPM
 
     "@apexdevtools/vf-parser": "^1.0.0"
 
-### Building
+## Building
+
 To build both distributions:
 
     npm run build
 
-### History
+## History
+
     1.0.0 - Initial version, Move to @apexdevtools/vf-parser
 
-### Source & Licenses
+## Source & Licenses
 
-All the source code included uses a 3-clause BSD license. 
+All the source code included uses a 3-clause BSD license.
