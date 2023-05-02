@@ -25,12 +25,12 @@ Maven
     <dependency>
         <groupId>io.github.apex-dev-tools</groupId>
         <artifactId>vf-parser</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </dependency>
 
 NPM
 
-    "@apexdevtools/vf-parser": "^1.0.0"
+    "@apexdevtools/vf-parser": "^1.1.0"
 
 ## Building
 
