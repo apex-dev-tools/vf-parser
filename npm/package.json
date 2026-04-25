@@ -1,41 +1,56 @@
 {
   "name": "@apexdevtools/vf-parser",
-  "version": "1.1.0",
+  "version": "2.0.0-SNAPSHOT",
   "author": "Apex Dev Tools Team <apexdevtools@gmail.com> (https://github.com/apex-dev-tools)",
   "bugs": "https://github.com/apex-dev-tools/vf-parser/issues",
   "description": "Salesforce Visualforce parser",
-  "main": "lib/index.js",
+  "homepage": "https://github.com/apex-dev-tools/vf-parser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apex-dev-tools/vf-parser.git"
+  },
   "license": "BSD-3-Clause",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "type": "module",
   "scripts": {
-    "build": "npm run antlr4ts && cp ../README.md . && tsc",
-    "test": "jest --config jestconfig.json lib",
-    "antlr4ts": "npm run antlr-build && npm run antlr-patch",
-    "antlr-build": "(cd antlr; antlr4ts -visitor -o ../src VFLexer.g4 VFParser.g4)",
-    "antlr-patch": "node patch",
-    "check": "node -e 'require(\"./lib/index.js\").check()'"
+    "antlr": "mvn exec:exec",
+    "build": "npm run clean && npm run antlr && tsc",
+    "build:test": "npm run build && npm test",
+    "check": "node -e 'require(\"./dist/src/index.js\").check()'",
+    "clean": "rm -rf dist",
+    "init": "npm ci && npm run antlr",
+    "lint": "eslint --cache --cache-location .eslintcache ./src --fix",
+    "prepare": "patch-package",
+    "prepack": "cp ../*.md .",
+    "test": "jest --config jestconfig.json"
   },
   "files": [
-    "lib/**/*"
+    "dist/src",
+    "patches"
+  ],
+  "bundleDependencies": [
+    "antlr4"
   ],
   "dependencies": {
-    "antlr4ts": "0.5.0-alpha.4",
-    "node-dir": "^0.1.17"
+    "antlr4": "4.13.2"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.24",
-    "@types/node": "^14.14.16",
-    "@types/node-dir": "^0.0.34",
-    "@typescript-eslint/eslint-plugin": "^4.29.0",
-    "@typescript-eslint/parser": "^4.29.0",
-    "antlr4ts-cli": "0.5.0-alpha.4",
-    "eslint": "^7.32.0",
-    "jest": "^27.0.6",
-    "shx": "^0.3.4",
-    "typescript": "^4.3.5"
+    "@eslint/js": "^10.0.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.19.17",
+    "eslint": "^10.2.1",
+    "jest": "^30.3.0",
+    "patch-package": "^8.0.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": "^20.19.0 || ^22.13.0 || >=24"
   },
-  "homepage": "https://github.com/apex-dev-tools/vf-parser",
-  "repository": "apex-dev-tools/vf-parser"
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./antlr/*": "./dist/src/antlr/*.js",
+    "./ThrowingErrorListener": "./dist/src/ThrowingErrorListener.js"
+  }
 }

@@ -5,11 +5,12 @@
   "homepage": "https://github.com/apex-dev-tools/vf-parser",
   "repository": "apex-dev-tools/vf-parser",
   "scripts": {
-    "build": "npm run build-npm && npm run build-jvm",
-    "build-npm": "npm run init-npm && cd npm && npm run build && npm run test && cd ..",
-    "build-jvm": "mvn package -f jvm",
-    "init-npm": "cp antlr/* npm/antlr && (cd npm; npm ci)",
-    "init-jvm": "mvn exec:exec -f jvm"
+    "build": "npm run build:npm && npm run build:jvm",
+    "build:jvm": "mvn package -f jvm",
+    "build:npm": "npm run --prefix npm build:test",
+    "init": "npm run init:npm && npm run init:jvm",
+    "init:jvm": "mvn exec:exec -f jvm",
+    "init:npm": "npm run --prefix npm init"
   },
   "files": [
   ],

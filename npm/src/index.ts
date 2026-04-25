@@ -26,48 +26,58 @@
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-import { resolve } from 'path'
-import * as dir from 'node-dir'
-import { VFLexer } from "./VFLexer";
-import { VFParser} from "./VFParser";
-import { CharStreams, CommonTokenStream } from 'antlr4ts';
-import { ThrowingErrorListener } from "./ThrowingErrorListener";
-import { readFileSync } from 'fs';
-import { lstatSync } from 'fs';
+import { readdir } from "node:fs/promises";
+import { lstatSync, readFileSync } from "node:fs";
+import { extname, join, resolve } from "node:path";
+import { CharStream, CommonTokenStream } from "antlr4";
+import VFLexer from "./antlr/VFLexer.js";
+import VFParser from "./antlr/VFParser.js";
+import { ThrowingErrorListener } from "./ThrowingErrorListener.js";
 
-export * from './VFLexer'
-export * from './VFParser'
-export * from './ThrowingErrorListener'
-export * from './VFParserListener'
-export * from './VFParserVisitor'
-export {CommonTokenStream} from 'antlr4ts'
-export {ParseTreeWalker} from 'antlr4ts/tree/ParseTreeWalker'
+export * from "./ThrowingErrorListener.js";
+export * from "./antlr/VFParser.js";
+export { default as VFLexer } from "./antlr/VFLexer.js";
+export { default as VFParser } from "./antlr/VFParser.js";
+export { default as VFParserListener } from "./antlr/VFParserListener.js";
+export { default as VFParserVisitor } from "./antlr/VFParserVisitor.js";
 
-export function check(): void {
-    const path = resolve(process.argv[1] || process.cwd())
+export async function check(): Promise<void> {
+  const path = resolve(process.argv[1] || process.cwd());
 
-    dir.files(path, function(err, files) {
-        if (err) throw err;
+  const files = await listFiles(path);
+  let parsedCount = 0;
+  files
+    .filter(name => name.endsWith(".page"))
+    .forEach(file => {
+      if (lstatSync(file).isFile()) {
+        const content = readFileSync(file).toString();
+        const lexer = new VFLexer(new CharStream(content));
+        const tokens = new CommonTokenStream(lexer);
 
-        let parsedCount = 0;
-        files.filter(name => name.endsWith(".page")).forEach(file => {
-            if (lstatSync(file).isFile()) {
-                const content = readFileSync(file);
-                const lexer = new VFLexer(CharStreams.fromString(content.toString()));
-                const tokens  = new CommonTokenStream(lexer);
+        const parser = new VFParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(new ThrowingErrorListener());
+        try {
+          parser.vfUnit();
+        } catch (err) {
+          console.log(`Error parsing ${file}`);
+          console.log(err);
+        }
+        parsedCount += 1;
+      }
+    });
+  console.log(`Parsed ${parsedCount} files`);
+}
 
-                const parser = new VFParser(tokens);
-                parser.removeErrorListeners();
-                parser.addErrorListener(new ThrowingErrorListener());
-                try {
-                    parser.vfUnit();
-                } catch (err) {
-                    console.log(`Error parsing ${file}`);
-                    console.log(err);
-                }
-                parsedCount += 1;
-            }
-        })
-        console.log(`Parsed ${parsedCount} files`);
-    })
+async function listFiles(path: string): Promise<string[]> {
+  const dirent = await readdir(path, {
+    withFileTypes: true,
+    recursive: true,
+  });
+  return dirent.reduce<string[]>((files, ent) => {
+    if (ent.isFile() && extname(ent.name) === ".page") {
+      files.push(join(ent.parentPath, ent.name));
+    }
+    return files;
+  }, []);
 }
