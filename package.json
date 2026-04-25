@@ -7,9 +7,9 @@
   "scripts": {
     "build": "npm run build-npm && npm run build-jvm",
     "build-npm": "npm run init-npm && cd npm && npm run build && npm run test && cd ..",
-    "build-jvm": "npm run init-jvm && cd jvm && mvn package && cd ..",
+    "build-jvm": "mvn package -f jvm",
     "init-npm": "cp antlr/* npm/antlr && (cd npm; npm ci)",
-    "init-jvm": "cp antlr/* jvm/src/main/antlr4/com/nawforce/vfparser"
+    "init-jvm": "mvn exec:exec -f jvm"
   },
   "files": [
   ],
