@@ -28,10 +28,6 @@
 
 lexer grammar VFLexer;
 
-@lexer::members {
-    public void clearCache() {_interp.clearDFA();}
-}
-
 // Outside markup handling
 COMMENT:  		'<!--' .*? '-->';
 PI_START:  	  '<?' Name WS? -> pushMode(INTAG);

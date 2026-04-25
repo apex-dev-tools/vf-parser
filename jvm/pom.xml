@@ -102,13 +102,15 @@
         </executions>
         <configuration>
           <executable>java</executable>
-          <workingDirectory>${project.basedir}/../antlr</workingDirectory>
+          <workingDirectory>${project.basedir}/antlr</workingDirectory>
           <classpathScope>compile</classpathScope>
           <arguments>
             <argument>-classpath</argument>
             <classpath/>
             <argument>org.antlr.v4.Tool</argument>
             <argument>-visitor</argument>
+            <argument>-lib</argument>
+            <argument>${project.basedir}/../antlr</argument>
             <argument>-o</argument>
             <argument>${antlr.target}/com/nawforce/vfparser</argument>
             <argument>-package</argument>
