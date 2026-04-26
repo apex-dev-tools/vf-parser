@@ -12,47 +12,47 @@
     derived from this software without specific prior written permission.
  */
 
- /*
- * These are just smoke tests. 
+/*
+ * These are just smoke tests.
  */
 package com.nawforce.vfparser;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 public class PageParserTest {
 
-    @Test
-    void testSingleElementPage() {
-        VFLexer lexer = new VFLexer(CharStreams.fromString("<apex:page/>"));
-        CommonTokenStream tokens  = new CommonTokenStream(lexer);
+  @Test
+  void testSingleElementPage() {
+    VFLexer lexer = new VFLexer(CharStreams.fromString("<apex:page/>"));
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-        VFParser parser = new VFParser(tokens);
-        VFParser.VfUnitContext context = parser.vfUnit();
+    VFParser parser = new VFParser(tokens);
+    VFParser.VfUnitContext context = parser.vfUnit();
 
-        assertNotNull(context);
-        assertNotNull(context.element());
+    assertNotNull(context);
+    assertNotNull(context.element());
+  }
+
+  @Test
+  void testBrokenPage() {
+    VFLexer lexer = new VFLexer(CharStreams.fromString("<apex:page"));
+    CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+    VFParser parser = new VFParser(tokens);
+    parser.removeErrorListeners();
+    parser.addErrorListener(new ThrowingErrorListener());
+    try {
+      parser.vfUnit();
+      assert (false);
+    } catch (SyntaxException ex) {
+      assertEquals(ex.message, "no viable alternative at input '<apex:page'");
+      assert (ex.line == 1);
+      assert (ex.column == 10);
     }
-
-    @Test
-    void testBrokenPage() {
-        VFLexer lexer = new VFLexer(CharStreams.fromString("<apex:page"));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-
-        VFParser parser = new VFParser(tokens);
-        parser.removeErrorListeners();
-        parser.addErrorListener(new ThrowingErrorListener());
-        try {
-            parser.vfUnit();
-            assert (false);
-        } catch (SyntaxException ex) {
-            assertEquals(ex.message, "no viable alternative at input '<apex:page'");
-            assert(ex.line == 1);
-            assert(ex.column == 10);
-        }
-    }
+  }
 }

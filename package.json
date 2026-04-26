@@ -1,24 +1,25 @@
 {
-  "name": "vf-parser-init",
+  "name": "vf-parser-build",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "homepage": "https://github.com/apex-dev-tools/vf-parser",
   "repository": "apex-dev-tools/vf-parser",
   "scripts": {
     "build": "npm run build:npm && npm run build:jvm",
     "build:jvm": "mvn package -f jvm",
     "build:npm": "npm run --prefix npm build:test",
-    "init": "npm run init:npm && npm run init:jvm",
+    "prepare": "husky",
+    "init": "npm ci && npm run init:npm && npm run init:jvm",
     "init:jvm": "mvn exec:exec -f jvm",
     "init:npm": "npm run --prefix npm init"
   },
-  "files": [
-  ],
-  "dependencies": {
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
   },
   "devDependencies": {
-  },
-  "engines": {
-    "node": ">=8.0.0"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-java": "^2.8.1"
   }
 }
