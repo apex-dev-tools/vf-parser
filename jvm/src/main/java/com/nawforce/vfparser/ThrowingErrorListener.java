@@ -19,27 +19,29 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 
 class SyntaxException extends RuntimeException {
-    Integer line;
-    Integer column;
-    String message;
 
-    SyntaxException(Integer line, Integer column, String message) {
-        this.line = line;
-        this.column = column;
-        this.message = message;
-    }
+  Integer line;
+  Integer column;
+  String message;
+
+  SyntaxException(Integer line, Integer column, String message) {
+    this.line = line;
+    this.column = column;
+    this.message = message;
+  }
 }
 
 class ThrowingErrorListener extends BaseErrorListener {
-    @Override
-    public void syntaxError(Recognizer<?, ?> recognizer,
-                            Object offendingSymbol,
-                            int line,
-                            int charPositionInLine,
-                            String msg,
-                            RecognitionException e) {
-        throw new SyntaxException(line, charPositionInLine, msg);
-    }
+
+  @Override
+  public void syntaxError(
+    Recognizer<?, ?> recognizer,
+    Object offendingSymbol,
+    int line,
+    int charPositionInLine,
+    String msg,
+    RecognitionException e
+  ) {
+    throw new SyntaxException(line, charPositionInLine, msg);
+  }
 }
-
-
