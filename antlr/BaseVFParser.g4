@@ -27,11 +27,6 @@
 */
 
 parser grammar VFParser;
-options {tokenVocab=VFLexer;}
-
-@parser::members {
-    public void clearCache() {_interp.clearDFA();}
-}
 
 vfUnit: (COMMENT | WS_NL | processingInstruction)* element (COMMENT | WS_NL)* EOF;
 

@@ -13,15 +13,21 @@
  */
 
 /*
- * These are just smoke tests. 
+ * These are just smoke tests.
  */
-import { VFLexer } from "../VFLexer";
-import { ElementContext, VFParser, VfUnitContext } from "../VFParser";
-import { CharStreams, CommonTokenStream } from "antlr4ts";
-import { SyntaxException, ThrowingErrorListener } from "../ThrowingErrorListener";
+import { CharStream, CommonTokenStream } from "antlr4";
+import VFLexer from "../src/antlr/VFLexer.js";
+import VFParser, {
+  ElementContext,
+  VfUnitContext,
+} from "../src/antlr/VFParser.js";
+import {
+  SyntaxException,
+  ThrowingErrorListener,
+} from "../src/ThrowingErrorListener.js";
 
 test("Single element page", () => {
-  const lexer = new VFLexer(CharStreams.fromString("<apex:page/>"));
+  const lexer = new VFLexer(new CharStream("<apex:page/>"));
   const tokens = new CommonTokenStream(lexer);
 
   const parser = new VFParser(tokens);
@@ -32,19 +38,20 @@ test("Single element page", () => {
 });
 
 test("Broken page", () => {
-  const lexer = new VFLexer(CharStreams.fromString("<apex:page"));
+  const lexer = new VFLexer(new CharStream("<apex:page"));
   const tokens = new CommonTokenStream(lexer);
 
   const parser = new VFParser(tokens);
   parser.removeErrorListeners();
   parser.addErrorListener(new ThrowingErrorListener());
-    try {
-        parser.vfUnit();
-        expect(true).toBe(false);
-    } catch (ex) {
-        expect(ex).toBeInstanceOf(SyntaxException)
-        expect(ex.message).toEqual("no viable alternative at input '<apex:page'")
-        expect(ex.line).toEqual(1)
-        expect(ex.column).toEqual(10)
-    }
+  try {
+    parser.vfUnit();
+    expect(true).toBe(false);
+  } catch (ex) {
+    expect(ex).toBeInstanceOf(SyntaxException);
+    const err = ex as SyntaxException;
+    expect(err.message).toEqual("no viable alternative at input '<apex:page'");
+    expect(err.line).toEqual(1);
+    expect(err.column).toEqual(10);
+  }
 });

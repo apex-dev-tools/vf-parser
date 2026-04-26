@@ -1,11 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
+    "target": "es2022",
+    "module": "node20",
+    "moduleResolution": "node16",
+    "outDir": "./dist",
     "sourceMap": true,
     "declaration": true,
-    "rootDir": "src",
-    "outDir": "lib",
-    "allowJs": true
-  }
+    "strict": true,
+    "allowJs": true,
+    "types": ["node", "jest"]
+  },
+  "include": [
+    "src",
+    "test"
+  ]
 }
