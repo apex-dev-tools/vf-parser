@@ -1,6 +1,6 @@
 {
   "name": "@apexdevtools/vf-parser",
-  "version": "2.0.0-SNAPSHOT",
+  "version": "2.0.0-beta.1",
   "author": "Apex Dev Tools Team <apexdevtools@gmail.com> (https://github.com/apex-dev-tools)",
   "bugs": "https://github.com/apex-dev-tools/vf-parser/issues",
   "description": "Salesforce Visualforce parser",
